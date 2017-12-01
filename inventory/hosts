@@ -5,10 +5,11 @@
 ###########################################################################
 timeout=60
 ansible_become=yes
-ansible_user=ec2-user
+ansible_user = ec2-user
 ansible_private_key_file="~/.ssh/{{GUID}}key.pem"
 ansible_common_args="-o StrictHostKeyChecking=no"
 host_key_checking=False
+pipelining = true
 
 [3tierapp:children]
 frontends

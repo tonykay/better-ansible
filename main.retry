@@ -1,5 +1,0 @@
-ansible_ssh_common_args=-o StrictHostKeyChecking=no
-app1
-app2
-appdb1
-frontend1

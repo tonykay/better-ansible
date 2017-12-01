@@ -37,3 +37,10 @@
       mode: 0400
     tags:
       - enable_ssh_key
+
+  - name: remove copy of ssh key
+    file:
+      path: ./{{GUID}}key.pem
+      state: absent
+    tags:
+      - remove_ssh_key

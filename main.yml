@@ -3,3 +3,6 @@
 - import_playbook: pre-flight.yml
 - import_playbook: common.yml
 - import_playbook: frontend.yml
+- import_playbook: apptier.yml
+- import_playbook: postgres-install.yml
+- import_playbook: postgres-configure.yml

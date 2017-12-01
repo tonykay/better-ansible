@@ -11,7 +11,7 @@
 
   - name: enable repos
     template:
-      src: "./templates/{{repofile}}"
+      src: ./templates/{{repofile}}
       dest: /etc/yum.repos.d/{{repofile}}
       mode: 0644
     tags:

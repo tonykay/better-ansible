@@ -40,52 +40,32 @@
     become_user: postgres
     tags: create_database
 
-  - name: copy postgres password copy_create_script
+  - name: copy sql scripts to host
     copy:
-      src: ./password.sql
-      dest: /tmp/password.sql
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: 0400
+      owner: postgres
+    with_items:
+      - { src: ./sql/password.sql, dest: /tmp/password.sql }
+      - { src: ./sql/create_table.sql, dest: /tmp/create_table.sql }
+      - { src: ./sql/populate_table.sql, dest: /tmp/populate_table.sql }
     tags:
-      - copy_password_sql
-
-  - name: copy create_table sql script
-    copy:
-      src: ./create_table.sql
-      dest: /tmp/create_table.sql
-    tags:
-      - copy_create_sql
-
-  - name: copy populate_table sql script
-    copy:
-      src: ./populate_table.sql
-      dest: /tmp/populate_table.sql
-    tags:
-      - copy_populate_sql
+      - copy_sql_scripts
 
   - block:
 
-    - name: set postgres password
-      command: psql -d ansible_books -f /tmp/password.sql
+    - name: setup postgres database and authentication
+      command: psql -d ansible_books -f {{ item }}
+      with_items:
+        - "/tmp/password.sql"
+        - "/tmp/create_table.sql"
+        - "/tmp/populate_table.sql"
       become: yes
       become_user: postgres
       tags:
-        - set_postgres_password
+        - create_postgres_database
 
-    - name: create table
-      command: psql -d ansible_books -f /tmp/create_table.sql
-      become: yes
-      become_user: postgres
-      tags:
-        - create_table
-  #  - name: copy populate_table script
-
-    - name: populate_table
-      command: psql -d ansible_books -f /tmp/populate_table.sql
-      become: yes
-      become_user: postgres
-      tags:
-        - populate_table
-
-#TODO: 1) Replace above with a loop i.e. call command once
 #TODO: 2) Scripts should be read only postgres users
 #TODO: 3) Delete scripts after execution
 #TODO: 4) Use ansible vault and templates for password.sql
