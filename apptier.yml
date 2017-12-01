@@ -9,45 +9,36 @@
     package:
       name: tomcat
       state: latest
+    notify: restart tomcat
+    tags:
+      - install_tomcat
+
   - name: enable tomcat at boot
     service:
       name: tomcat
       enabled: yes
+    notify: restart tomcat
+    tags:
+      - enable_tomcat
 
   - name: create ansible tomcat directory
     file:
       path: /usr/share/tomcat/webapps/ROOT
       state: directory
+    tags:
+      - create_tomcat_directory
 
   - name: copy static index.html to tomcat webapps/ansible/index.html
     template:
-      src: index.html.j2
+      src: ./templates/index.html.j2
       dest: /usr/share/tomcat/webapps/ROOT/index.html
       mode: 0644
+    notify: restart tomcat
+    tags:
+      - copy_indexhtml_to_tomcat
 
-  - name: start tomcat
-    service:
-      name: tomcat
-      state: started
-
-- name: index.html on app 1
-  hosts: app1.{{GUID}}.internal
-  gather_facts: false
-  become: true
-
-  tasks:
-  - name: copy static index.html to tomcat webapps/ansible/index.html
-    template:
-      src: templates/index.html.app1
-      dest: /usr/share/tomcat/webapps/ansible/index.html
-
-- name: index.html on app 1
-  hosts: app2
-  gather_facts: false
-  become: true
-
-  tasks:
-  - name: copy static index.html to tomcat webapps/ansible/index.html
-    template:
-      src: templates/index.html.app2
-      dest: /usr/share/tomcat/webapps/ansible/index.html
+  handlers:
+    - name: restart tomcat
+      service:
+        name: tomcat
+        state: restarted
