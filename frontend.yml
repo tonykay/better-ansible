@@ -1,0 +1,30 @@
+---
+- name: deploy front-end load balancers haproxy
+  hosts: frontends
+  gather_facts: false
+  become: true
+
+  tasks:
+
+  - name: install packages httpie and HAProxy
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - httpie
+      - haproxy
+
+  - name: enable HAProxy
+    service:
+      name: haproxy
+      state: started
+
+  - name: configure haproxy
+    template:
+      src: ./templates/haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+
+  - name: restart HAproxy
+    service:
+      name: haproxy
+      state: restarted

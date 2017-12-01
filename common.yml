@@ -1,0 +1,18 @@
+---
+- name: common configuration
+  hosts: 3tierapp
+  gather_facts: false
+  become: true
+  vars:
+    repofile: open_three-tier-app.repo
+#TODO: move repofile to a group_vars file or similar - not DRY, defined twice
+
+  tasks:
+
+  - name: enable repos
+    template:
+      src: "./templates/{{repofile}}"
+      dest: /etc/yum.repos.d/{{repofile}}
+      mode: 0644
+    tags:
+      - enable_repos

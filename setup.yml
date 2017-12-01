@@ -1,0 +1,43 @@
+---
+- name: common configuration
+  hosts: bastion
+  gather_facts: false
+  become: true
+  vars:
+    repofile: open_three-tier-app.repo
+
+  tasks:
+
+  - name: fetch repo file
+    fetch:
+      src: /etc/yum.repos.d/{{repofile}}
+      dest: ./{{repofile}}
+      flat: yes
+    tags:
+      - get_repofile
+
+
+- name: common configuration
+  hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    repofile: open_three-tier-app.repo
+
+  tasks:
+
+  - name: fetch repo file
+    when: inventory_hostname in groups['bastion']
+    fetch:
+      src: /etc/yum.repos.d/{{repofile}}
+      dest: ./{{repofile}}
+      flat: yes
+    tags:
+      - get_block_repofile
+
+  - name: enable repos
+    when: inventory_hostname not in groups['bastion']
+    template:
+      src: "{{repofile}}"
+      dest: /etc/yum.repos.d/{{repofile}}
+      mode: 0644

@@ -1,0 +1,7 @@
+[bastion]
+jumpbox ansible_host=bastion.{{GUID}}.example.opentlc.com
+
+[bastion:vars]
+ansible_user=ankay-redhat.com
+ansible_ssh_private_key_file="~/.ssh/ankay-labs.pem"
+ansible_ssh_common_args="-o StrictHostKeyChecking=no"

@@ -1,0 +1,5 @@
+---
+#name: main playbook - configure a 3 tier app
+- import_playbook: pre-flight.yml
+- import_playbook: common.yml
+- import_playbook: frontend.yml

@@ -1,0 +1,30 @@
+---
+- name: deploy postgres
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  tasks:
+
+  - name: install postgres
+    yum:
+      name: postgresql-server
+      state: latest
+
+  - name: enable postgres at boot
+    service:
+      name: postgresql
+      enabled: yes
+
+  - name: check for postgres data directories
+    stat: path=/var/lib/pgsql/data/postgresql.conf
+    register: p
+
+  - block:
+    - name: initilize postgres
+      command: postgresql-setup initdb
+    when: not p.stat.exists
+
+  - name: start postgres
+    service:
+      name: postgresql.service
+      state: started

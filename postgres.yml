@@ -1,0 +1,64 @@
+---
+- name: deploy postgres
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  tasks:
+
+  - name: install postgres
+    yum:
+      name: postgresql-server
+      state: latest
+
+  - name: enable postgres at boot
+    service:
+      name: postgresql
+      enabled: yes
+
+  - name: check for postgres data directories
+    stat: path=/var/lib/pgsql/data/postgresql.conf
+    register: p
+
+  - block:
+    - name: initilize postgres
+      command: postgresql-setup initdb
+    when: not p.stat.exists
+
+  - name: start postgres
+    service:
+      name: postgresql.service
+      state: started
+
+# Configure the database for the application
+
+- name: configure postgres database
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  tasks:
+
+  - name: install python-psycopg2 module on target - python postgres adapter
+    yum:
+      name: python-psycopg2
+      state: latest
+
+  - name: create postgres_user
+    user:
+      name: postgres_user
+      comment: "postgres_user account"
+
+  - name: create database ansible
+    postgresql_db:
+      name: books
+      login_user: postgres_user
+    tags:
+      - create_db
+
+  - name: check table exists
+    postgresql_db:
+      name: exampleTable
+      state: present
+      login_host: localhost
+      port: 5432
+      login_user: postgres_user
+    tags: postgres_table
