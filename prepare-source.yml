@@ -1,0 +1,19 @@
+---
+- name: prepare source code
+  gather_facts: false
+  hosts: localhost
+  tasks:
+
+  - name: generate GUID specfic context.xml
+    template:
+      src: templates/context.xml.j2
+      dest: books/context.xml
+    tags:
+      - generate_context_html
+
+  - name: create source code archive
+    archive:
+      path: ./books
+      dest: books.gz
+    tags:
+      - create_source_archive

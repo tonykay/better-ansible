@@ -31,5 +31,16 @@
 
 - name: Remove index.html
   file:
-    state: absent
     path: /tmp/index.html
+    state: absent
+
+# - name: cleanup localhost remove ssh key and repo
+#   local_action:
+#     file:
+#       path: "{{ item }}"
+#       state: absent
+#   with_items:
+#     - "~/.ssh/{{GUID}}key.pem"
+#     - "templates/open_three-tier-app.repo"
+#   tags:
+#     - remove_localhost_files

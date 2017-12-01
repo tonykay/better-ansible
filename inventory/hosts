@@ -6,29 +6,23 @@
 timeout=60
 ansible_become=yes
 ansible_ssh_user=ec2-user
-ansible_ssh_private_key_file="~/.ssh/d4ffkey.pem"
+ansible_ssh_private_key_file="~/.ssh/{{GUID}}key.pem"
 ansible_ssh_common_args="-o StrictHostKeyChecking=no"
 
 [3tierapp:children]
 frontends
 apps
 appdbs
-support
-
 
 [frontends]
 ## These are the frontends
-frontend1.d4ff.internal ansible_ssh_host=frontend1.d4ff.example.opentlc.com
+frontend1 ansible_host=frontend1.{{GUID}}.example.opentlc.com
 
 [apps]
 ## These are the apps
-app1.d4ff.internal ansible_ssh_host=app1.d4ff.example.opentlc.com
-app2.d4ff.internal ansible_ssh_host=app2.d4ff.example.opentlc.com
+app1 ansible_host=app1.{{GUID}}.example.opentlc.com
+app2 ansible_host=app2.{{GUID}}.example.opentlc.com
 
 [appdbs]
 ## These are the appdbs
-appdb1.d4ff.internal ansible_ssh_host=appdb1.d4ff.example.opentlc.com
-
-## These are the support
-[support]
-support1.d4ff.internal ansible_ssh_host=support1.d4ff.example.opentlc.com
+appdb1 ansible_host=appdb1.{{GUID}}.example.opentlc.com
