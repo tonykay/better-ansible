@@ -6,3 +6,8 @@
 - import_playbook: apptier.yml
 - import_playbook: postgres-install.yml
 - import_playbook: postgres-configure.yml
+
+# start configuring compile_serverlet
+
+- import_playbook: prepare-source.yml
+- import_playbook: deploy_serverlet.yml
