@@ -9,5 +9,5 @@
 
 # start configuring compile_serverlet
 
-- import_playbook: prepare-source.yml
+- import_playbook: prepare-serverlet.yml
 - import_playbook: deploy_serverlet.yml
