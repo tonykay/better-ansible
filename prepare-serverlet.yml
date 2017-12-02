@@ -7,7 +7,7 @@
   - name: generate GUID specfic context.xml
     template:
       src: templates/context.xml.j2
-      dest: books/context.xml
+      dest: books/META-INF/context.xml
     tags:
       - generate_context_html
 
