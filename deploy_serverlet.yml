@@ -26,8 +26,11 @@
     tags:
       - install_books_sourcepostgresServlet
 
+#TODO: set GUID in context.xml before compiling
+
+
   - name: compile book serverlet
-    command: javac -classpath /usr/share/tomcat/lib/tomcat-servlet-3.0-api.jar /usr/share/tomcat/webapps/books/postgresServlet.java
+    command: javac -classpath /usr/share/tomcat/lib/tomcat-servlet-3.0-api.jar /usr/share/tomcat/webapps/books/WEB-INF/classes/postgresServlet.java
     notify: restart tomcat
     tags:
       - compile_serverlet

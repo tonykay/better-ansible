@@ -1,0 +1,16 @@
+---
+tasks:
+
+- name: copy repo file to target hosts
+  template:
+    src: ./templates/{{ REPOFILE }}
+    dest: /etc/yum.repos.d/{{ REPOFILE }}
+    mode: 0644
+  tags:
+    - enable_target_host_repos
+
+- name: set meaningful hostnames from inventory
+  hostname:
+    name: "{{ inventory_hostname }}"
+  tags:
+    - set_target_hostnames

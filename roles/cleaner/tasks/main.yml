@@ -24,10 +24,12 @@
     - tomcat
     - postgresql-server
 
-#- name: Copy placeholder index.html
-# template:
-#    src: /dev/null
-#    dest: /tmp/index.html
+- name: Remove tomcat directory
+  file:
+    state: absent
+    path: /usr/share/tomcat
+  tags:
+      - remove_tomcat_dir
 
 - name: Remove index.html
   file:

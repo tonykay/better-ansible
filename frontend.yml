@@ -13,18 +13,26 @@
     with_items:
       - httpie
       - haproxy
+    tags:
+      - install_haproxy
 
   - name: enable HAProxy
     service:
       name: haproxy
       state: started
+    tags:
+      enable_haproxy
 
   - name: configure haproxy
     template:
       src: ./templates/haproxy.cfg.j2
       dest: /etc/haproxy/haproxy.cfg
+    notify: restart haproxy
+    tags:
+      - configure_haproxy
 
-  - name: restart HAproxy
-    service:
-      name: haproxy
-      state: restarted
+  handlers:
+    - name: restart haproxy
+      service:
+        name: haproxy
+        state: restarted

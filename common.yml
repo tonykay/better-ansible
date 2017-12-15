@@ -1,5 +1,5 @@
 ---
-- name: common configuration
+- name: common configuration across all target hosts
   hosts: 3tierapp
   gather_facts: false
   become: true
@@ -7,12 +7,20 @@
     repofile: open_three-tier-app.repo
 #TODO: move repofile to a group_vars file or similar - not DRY, defined twice
 
+#TODO: set hostnames
+
   tasks:
 
-  - name: enable repos
+  - name: copy repo file to target hosts
     template:
       src: ./templates/{{repofile}}
       dest: /etc/yum.repos.d/{{repofile}}
       mode: 0644
     tags:
       - enable_repos
+
+  - name: set meaningful hostnames from inventory
+    hostname:
+      name: "{{ inventory_hostname }}"
+    tags:
+      - set_hostnames

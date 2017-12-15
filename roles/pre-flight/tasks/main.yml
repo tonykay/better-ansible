@@ -1,0 +1,24 @@
+---
+- name: fetch remote yum repo file
+  fetch:
+    src: /etc/yum.repos.d/{{ REPOFILE }}
+    dest: ./templates/{{ REPOFILE }}
+    flat: yes
+  tags:
+    - get_repo_file
+
+- name: install remote user ssh key locally
+  fetch:
+    src: /root/.ssh/{{ SSH_KEY }}
+    dest: ~/.ssh/{{ SSH_KEY }}
+    flat: yes
+  tags:
+    - install_local_user_ssh_key
+
+- name: set ssh key permissions locally
+  file:
+    path: ~/.ssh/{{ GUID }}key.pem
+    mode: 0400
+  delegate_to: localhost
+  tags:
+     - set_local_ssh_key_permissions

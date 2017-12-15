@@ -1,0 +1,5 @@
+[local]
+localhost ansible_host=127.0.0.1
+
+[local:vars]
+ansible_become=no

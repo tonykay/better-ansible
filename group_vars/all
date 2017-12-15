@@ -1,2 +1,7 @@
 ---
-GUID: 2db1
+GUID: 3f93
+
+# Files and keys
+SSH_KEY: "{{ GUID }}key.pem"
+
+REPOFILE: open_three-tier-app.repo
