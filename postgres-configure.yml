@@ -31,14 +31,14 @@
       name: python-psycopg2
       state: latest
 
-  - name: create ansible_books database
-    postgresql_db:
-      name: ansible_books
-      state: present
-      login_user: postgres
-    become: yes
-    become_user: postgres
-    tags: create_database
+  # - name: create ansible_books database
+  #   postgresql_db:
+  #     name: ansible_books
+  #     state: present
+  #     login_user: postgres
+  #   become: yes
+  #   become_user: postgres
+  #   tags: create_database
 
   - name: copy sql scripts to host
     copy:
@@ -56,7 +56,8 @@
   - block:
 
     - name: setup postgres database and authentication
-      command: psql -d ansible_books -f {{ item }}
+      # command: psql -d ansible_books -f {{ item }}
+      command: psql -d postgres -f {{ item }}
       with_items:
         - "/tmp/password.sql"
         - "/tmp/create_table.sql"

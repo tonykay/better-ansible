@@ -1,7 +1,9 @@
 ---
 - name: prepare source code
   gather_facts: false
-  hosts: localhost
+  hosts: local
+  connection: local
+#TODO: why isn't this inherited from inventory? connection set to local there?
   tasks:
 
   - name: generate GUID specfic context.xml
