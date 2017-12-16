@@ -1,6 +1,6 @@
 ---
 # GUID MUST BE SET or passed in as an enviromental via -e GUID=wxyz
-GUID: 3f93
+GUID: c0c1
 
 # Files and keys
 SSH_KEY: "{{ GUID }}key.pem"

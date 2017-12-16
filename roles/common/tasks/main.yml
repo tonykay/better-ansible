@@ -1,6 +1,4 @@
 ---
-tasks:
-
 - name: copy repo file to target hosts
   template:
     src: ./templates/{{ REPOFILE }}

@@ -20,16 +20,26 @@
 
   roles:
     - { name: common }
-    
+
+- name: deploy front-end load balancer haproxy
+  hosts: frontends
+  gather_facts: false
+  become: true
+  tags:
+    - load-balancer
+
+  roles:
+    - { name: load-balancer }
+
 #TODO: Convert import_playbooks to roles
 
 #- import_playbook: common.yml
-- import_playbook: frontend.yml
-- import_playbook: apptier.yml
-- import_playbook: postgres-install.yml
-- import_playbook: postgres-configure.yml
-
-# start configuring compile_serverlet
-
-- import_playbook: prepare-serverlet.yml
-- import_playbook: deploy_serverlet.yml
+# - import_playbook: frontend.yml
+# - import_playbook: apptier.yml
+# - import_playbook: postgres-install.yml
+# - import_playbook: postgres-configure.yml
+#
+# # start configuring compile_serverlet
+#
+# - import_playbook: prepare-serverlet.yml
+# - import_playbook: deploy_serverlet.yml
