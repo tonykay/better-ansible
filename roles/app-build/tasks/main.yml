@@ -6,3 +6,18 @@
     state: latest
   tags:
     - install_jdk
+
+- name: inject application configuration to application.properties
+  template:
+    src: application.properties.j2
+    dest: ./application.properties
+  delegate_to: localhost
+  tags:
+    - generate_application_properties
+
+- name: create source code archive
+  archive:
+    path: ./books
+    dest: books.gz
+  tags:
+    - create_source_archive

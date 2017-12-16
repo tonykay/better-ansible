@@ -61,16 +61,15 @@
   roles:
     - { name: tok.gradle }
 
-# - name: deploy springboot application to app-tier
-#   hosts: apps
-#   gather_facts: false
-#   become: true
-#   tags:
-#     - app-build
-#
-#   roles:
-#     - { name: app-build }
+- name: deploy springboot application to app-tier
+  hosts: apps
+  gather_facts: false
+  become: true
+  tags:
+   - app-build
 
+  roles:
+   - { name: app-build }
 
 #TODO: query database for database and table
 
