@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html layout:decorator="layout/layout" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block layout:fragment="content">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Add new Student</div>
+                <div class="panel-body">
+                    <form method="post" class="form-group" action="/student">
+                        <div class="form-group">
+                            <label for="rollNo">Roll No:&nbsp;</label>
+                            <input class="form-control" type="number" name="rollNo" id="rollNo" maxlength="10"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Name:&nbsp;</label>
+                            <input class="form-control" type="text" name="name" id="name" maxlength="50"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date Of Birth:&nbsp;</label>
+                            <input class="form-control" type="date" name="dateOfBirth" id="dateOfBirth" maxlength="20"/>
+                        </div>
+
+                        <input class="btn btn-primary" type="submit" value="Save"/>
+
+                    </form>
+                </div>
+                <div class="panel-footer"><span th:text="${message}">Status</span></div>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Student List</div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Date of Birth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="student : ${students}">
+                                <td th:text="${student.getRollNo()}">Roll No</td>
+                                <td th:text="${student.getName()}">Name</td>
+                                <td th:text="${student.getDateOfBirthFormatted()}">Date of Birth</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

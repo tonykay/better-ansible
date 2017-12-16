@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.javasampleapproach.wardeployment.SpringBootWarDeploymentApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.153 sec - in com.javasampleapproach.wardeployment.SpringBootWarDeploymentApplicationTests

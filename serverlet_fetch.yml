@@ -3,7 +3,8 @@
   gather_facts: false
   hosts: local
   connection: local
-#TODO: why isn't this inherited from inventory? connection set to local there?
+#TODO: why isn't this inherited from inventory? connection set to local there?:Q!
+
   tasks:
 
   - name: generate GUID specfic context.xml

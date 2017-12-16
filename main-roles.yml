@@ -4,16 +4,26 @@
 - name: pre-flight, retrieve assets from bastion host
   hosts: bastion
   gather_facts: false
-  become: yes
+  become: true
   tags:
     - pre-flight
 
   roles:
     - { name: pre-flight }
 
+- name: common configuration across all target hosts
+  hosts: 3tierapp
+  gather_facts: false
+  become: true
+  tags:
+    - common
+
+  roles:
+    - { name: common }
+    
 #TODO: Convert import_playbooks to roles
 
-- import_playbook: common.yml
+#- import_playbook: common.yml
 - import_playbook: frontend.yml
 - import_playbook: apptier.yml
 - import_playbook: postgres-install.yml
