@@ -1,6 +1,9 @@
 - name: cleanup
-  hosts: all
+  hosts: 3tierapp
   gather_facts: false
   become: true
+  tags:
+    - cleaner
+    
   roles:
-    - { role: "./roles/cleaner" }
+    - { name: cleaner }

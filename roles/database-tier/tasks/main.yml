@@ -44,7 +44,6 @@
   tags:
     - enable_postgres_remote_authentication
 
-
 - name: install python-psycopg2 module on target - python postgres adapter
   yum:
     name: python-psycopg2
@@ -58,3 +57,23 @@
     state: started
   tags:
     - start_postgres
+
+#TODO: maybe a better way - check postgres modules
+
+- name: copy sql scripts to host
+  copy:
+    src: password.sql
+    dest: /tmp/password.sql
+    mode: 0400
+    owner: postgres
+  tags:
+    - copy_sql_scripts
+
+- name: setup postgres authentication
+  command: psql -d postgres -f {{ item }}
+  with_items:
+    - "/tmp/password.sql"
+  become: yes
+  become_user: postgres
+  tags:
+    - set_postgres_password

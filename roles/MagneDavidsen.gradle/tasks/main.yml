@@ -1,0 +1,38 @@
+---
+# installing gradle
+
+- name: Gradle | Download gradle
+  get_url:
+    url: "https://services.gradle.org/distributions/gradle-{{gradle_version}}-all.zip"
+    dest: "/tmp/gradle-{{gradle_version}}-all.zip"
+
+- name: Gradle | apt-get update
+  apt: update_cache=yes
+  
+- name: Gradle | Install unzip
+  apt: pkg=unzip state=latest
+
+- name: Gradle | Unpack the compressed Gradle
+  command: unzip /tmp/gradle-{{gradle_version}}-all.zip -d /usr/local
+
+- name: Grade | Rename Gradle folder
+  command: mv /usr/local/gradle-{{gradle_version}} /usr/local/gradle
+
+- name: Gradle | Set the permissions on the Gradle binary
+  file:
+    path: "/usr/local/gradle/bin"
+    state: directory
+    mode: 0755
+    recurse: yes
+
+- name: Gradle | Add the Gradle binary to the system path (/etc/profile)
+  lineinfile:
+    dest: /etc/profile
+    regexp: "{{item.regexp}}"
+    line: "{{item.line}}"
+    state: present
+  with_items:
+    - regexp: "^GRADLE_HOME=/usr/local/gradle"
+      line: "GRADLE_HOME=/usr/local/gradle"
+    - regexp: "^PATH=.*GRADLE_HOME.*"
+      line: "PATH=$PATH:$GRADLE_HOME/bin"

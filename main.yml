@@ -1,13 +1,95 @@
 ---
-#name: main playbook - configure a 3 tier app
-- import_playbook: pre-flight.yml
-- import_playbook: common.yml
-- import_playbook: frontend.yml
-- import_playbook: apptier.yml
-- import_playbook: postgres-install.yml
-- import_playbook: postgres-configure.yml
+# preflight
 
-# start configuring compile_serverlet
+- name: pre-flight, retrieve assets from bastion host
+  hosts: bastion
+  gather_facts: false
+  become: true
+  tags:
+    - pre-flight
 
-- import_playbook: prepare-serverlet.yml
-- import_playbook: deploy_serverlet.yml
+  roles:
+    - { name: pre-flight }
+
+- name: common configuration across all target hosts
+  hosts: 3tierapp
+  gather_facts: false
+  become: true
+  tags:
+    - common
+
+  roles:
+    - { name: common }
+
+- name: deploy front-end load balancer haproxy
+  hosts: frontends
+  gather_facts: false
+  become: true
+  tags:
+    - load-balancer-tier
+
+  roles:
+    - { name: load-balancer-tier }
+
+- name: deploy app-tier - tomcat
+  hosts: apps
+  gather_facts: false
+  become: true
+  tags:
+    - app-tier
+
+  roles:
+    - { name: app-tier }
+
+- name: deploy database-tier - postgres
+  hosts: appdbs
+  gather_facts: false
+  become: true
+  tags:
+    - database-tier
+
+  roles:
+    - { name: database-tier }
+
+- name: install gradle
+  hosts: apps
+  gather_facts: false
+  become: true
+  tags:
+    - install-gradle
+
+  roles:
+    - { name: tok.gradle }
+
+# - name: deploy springboot application to app-tier
+#   hosts: apps
+#   gather_facts: false
+#   become: true
+#   tags:
+#     - app-build
+#
+#   roles:
+#     - { name: app-build }
+
+
+#TODO: query database for database and table
+
+- name: smoke tests
+  gather_facts: false
+  hosts: local
+  connection: local
+  tags:
+    - smoke-tests
+
+  roles:
+    - { name: smoke-tests }
+
+#TODO: Convert import_playbooks to roles
+
+# - import_playbook: postgres-install.yml
+# - import_playbook: postgres-configure.yml
+#
+# # start configuring compile_serverlet
+#
+# - import_playbook: prepare-serverlet.yml
+# - import_playbook: deploy_serverlet.yml

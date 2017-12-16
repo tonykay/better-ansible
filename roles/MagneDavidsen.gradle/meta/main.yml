@@ -1,0 +1,17 @@
+---
+
+galaxy_info:
+  author: Magne Davidsen
+  description: Install Gradle
+  min_ansible_version: 1.7.0
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system
+  - development
+
+dependencies:
+  - ANXS.oracle-jdk

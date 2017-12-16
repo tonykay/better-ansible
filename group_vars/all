@@ -9,3 +9,8 @@ REPOFILE: open_three-tier-app.repo
 # Ports
 HAPROXY_PORT: 80
 TOMCAT_PORT: 8080
+
+# Gradle settings
+# Version is tested as good
+GRADLE_VERSION: 4.4
+GRADLE_HOME: /opt

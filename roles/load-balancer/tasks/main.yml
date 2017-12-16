@@ -1,0 +1,24 @@
+---
+# tasks file for load-balancer
+
+- name: install haproxy
+  yum:
+    name: haproxy
+    state: present
+  tags:
+    - install_haproxy
+
+- name: configure haproxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy
+  tags:
+    - configure_haproxy
+
+- name: enable haproxy
+  service:
+    name: haproxy
+    state: started
+  tags:
+    - enable_haproxy
