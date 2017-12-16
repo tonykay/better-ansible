@@ -1,0 +1,60 @@
+---
+- name: install postgres
+  yum:
+    name: postgresql-server
+    state: latest
+  tags:
+    - install_postgres
+
+- name: enable postgres at boot
+  service:
+    name: postgresql
+    enabled: yes
+  tags:
+    - enable_postgres
+
+- name: check for postgres data directories
+  stat: path=/var/lib/pgsql/data/postgresql.conf
+  register: p
+  tags:
+    - check_postgres_configuration
+
+- name: initilize postgres
+  command: postgresql-setup initdb
+  when: not p.stat.exists
+  notify: restart postgres
+  tags:
+    - initilize_postgres
+
+- name: enable postgres to listen externally (default is localhost)
+  lineinfile:
+    path: /var/lib/pgsql/data/postgresql.conf
+    regexp: "^listen_addresses='*'"
+    line: "listen_addresses='*'"
+  notify: restart postgres
+  tags:
+    - enable_postgres_listener
+
+- name: enable postgres to authenticate remote users
+  lineinfile:
+    path: /var/lib/pgsql/data/pg_hba.conf
+    regexp: "^host"
+    line: "host    all             all             all                     md5"
+  notify: restart postgres
+  tags:
+    - enable_postgres_remote_authentication
+
+
+- name: install python-psycopg2 module on target - python postgres adapter
+  yum:
+    name: python-psycopg2
+    state: latest
+  tags:
+    - install_postgres_python_adapter
+
+- name: start postgres
+  service:
+    name: postgresql.service
+    state: started
+  tags:
+    - start_postgres

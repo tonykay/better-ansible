@@ -1,0 +1,14 @@
+---
+- name: check load balancers and app servers for expected response
+  uri:
+    url:  http://{{ item.server }}.{{ GUID }}.example.opentlc.com:{{ item.port }}
+    return_content: yes
+  register: result
+  until: '"Tomcat on" in result.content'
+#TODO: use a test string variable in previous line
+  retries: 10
+  delay: 1
+  with_items:
+    - { server: frontend1, port: "{{ HAPROXY_PORT }}" }
+    - { server: app1, port: "{{ TOMCAT_PORT }}" }
+    - { server: app2, port: "{{ TOMCAT_PORT }}"}

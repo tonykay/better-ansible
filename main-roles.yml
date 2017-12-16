@@ -26,16 +26,45 @@
   gather_facts: false
   become: true
   tags:
-    - load-balancer
+    - load-balancer-tier
 
   roles:
-    - { name: load-balancer }
+    - { name: load-balancer-tier }
+
+- name: deploy app-tier - tomcat
+  hosts: apps
+  gather_facts: false
+  become: true
+  tags:
+    - app-tier
+
+  roles:
+    - { name: app-tier }
+
+- name: deploy database-tier - postgres
+  hosts: appdbs
+  gather_facts: false
+  become: true
+  tags:
+    - database-tier
+
+  roles:
+    - { name: database-tier }
+
+#TODO: query database for database and table
+
+- name: smoke tests
+  gather_facts: false
+  hosts: local
+  connection: local
+  tags:
+    - smoke-tests
+
+  roles:
+    - { name: smoke-tests }
 
 #TODO: Convert import_playbooks to roles
 
-#- import_playbook: common.yml
-# - import_playbook: frontend.yml
-# - import_playbook: apptier.yml
 # - import_playbook: postgres-install.yml
 # - import_playbook: postgres-configure.yml
 #
