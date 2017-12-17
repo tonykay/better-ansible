@@ -1,8 +1,8 @@
 ---
 - name: copy repo file to target hosts
   template:
-    src: ./templates/{{ REPOFILE }}
-    dest: /etc/yum.repos.d/{{ REPOFILE }}
+    src: ./templates/{{ REPO_FILE }}
+    dest: /etc/yum.repos.d/{{ REPO_FILE }}
     mode: 0644
   tags:
     - enable_target_host_repos

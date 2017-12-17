@@ -2,7 +2,7 @@
 Description=Ansible Student Service
 
 [Service]
-ExecStart=gradle clean bootrun {{ TOMCAT_APP_HOME}}/student
+ExecStart=/opt/gradle/bin/gradle bootrun -b {{ APPLICATION_HOME }}/build.gradle
 StandardOutput=null
 
 [Install]

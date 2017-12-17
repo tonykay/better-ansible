@@ -23,6 +23,7 @@ GRADLE_HOME: /opt
 
 # SpringBoot Settings
 SPRINGBOOT_PORT: 8090
+APPLICATION_HOME: "{{ TOMCAT_APP_HOME }}/student-app"
 
 # Postgres settings
 DATABASE_NAME: postgres

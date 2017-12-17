@@ -1,0 +1,11 @@
+- name: common configuration across all target hosts
+  hosts: 3tierapp
+  gather_facts: false
+  become: true
+
+  tasks:
+
+  - name: reboot all targets
+    command: systemctl --no-wall reboot
+    tags:
+      - reboot_all_targets

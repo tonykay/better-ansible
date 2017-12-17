@@ -13,14 +13,14 @@
 - name: inject application configuration to application.properties
   template:
     src: application.properties.j2
-    dest: ./application.properties
+    dest: ./student-app/src/main/resources/application.properties
   delegate_to: localhost
   tags:
     - generate_application_properties
 
 - name: create source code archive
   archive:
-    path: ./src
+    path: ./student-app
     dest: /tmp/app.gz
   delegate_to: localhost
   tags:
@@ -29,14 +29,32 @@
 - name: install source code in tomcat
   unarchive:
     src: /tmp/app.gz
-    dest: "{{ TOMCAT_APP_HOME }}
+    dest: "{{ TOMCAT_APP_HOME }}"
   tags:
     - install_source
-    
+
+- name: build student service
+  command: /opt/gradle/bin/gradle build -b "{{ APPLICATION_HOME }}"/build.gradle
+  register: result
+  notify: restart student.service
+  tags:
+    - build_student_app
+
+- debug:
+    var: result
+#        verbosity: 2
+
+
 - name: create systemd service wrapper for app
-  - template:
+  template:
     src: student.service.j2
     dest: /lib/systemd/system/student.service
   notify: restart student.service
   tags:
-    - enable_systemd_for_app
+    - create_systemd_service
+
+- name: enable app systemd
+  service:
+    name: student.service
+    enabled: yes
+    state: started
