@@ -7,6 +7,9 @@
   tags:
     - install_jdk
 
+# - name: fetch springboot student repo
+#   git:
+
 - name: inject application configuration to application.properties
   template:
     src: application.properties.j2
@@ -17,7 +20,23 @@
 
 - name: create source code archive
   archive:
-    path: ./books
-    dest: books.gz
+    path: ./src
+    dest: /tmp/app.gz
+  delegate_to: localhost
   tags:
     - create_source_archive
+
+- name: install source code in tomcat
+  unarchive:
+    src: /tmp/app.gz
+    dest: "{{ TOMCAT_APP_HOME }}
+  tags:
+    - install_source
+    
+- name: create systemd service wrapper for app
+  - template:
+    src: student.service.j2
+    dest: /lib/systemd/system/student.service
+  notify: restart student.service
+  tags:
+    - enable_systemd_for_app

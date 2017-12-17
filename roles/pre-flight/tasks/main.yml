@@ -1,8 +1,8 @@
 ---
 - name: fetch remote yum repo file
   fetch:
-    src: /etc/yum.repos.d/{{ REPOFILE }}
-    dest: ./templates/{{ REPOFILE }}
+    src: /etc/yum.repos.d/{{ REPO_FILE }}
+    dest: ./templates/{{ REPO_FILE }}
     flat: yes
   tags:
     - get_repo_file
@@ -17,7 +17,7 @@
 
 - name: set ssh key permissions locally
   file:
-    path: ~/.ssh/{{ GUID }}key.pem
+    path: ~/.ssh/{{ SSH_KEY }}
     mode: 0400
   delegate_to: localhost
   tags:

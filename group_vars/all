@@ -1,25 +1,28 @@
 ---
 # GUID MUST BE SET or passed in as an enviromental via -e GUID=wxyz
-GUID: c0c1
+GUID: 00ad
 DOMAIN_POSTFIX: example.opentlc.com
 DOMAIN_NAME: "{{ GUID }}.{{ DOMAIN_POSTFIX }}"
 
-# SSH settings 
+# SSH settings
 SSH_KEY: "{{ GUID }}key.pem"
 
 # Yum repo settings
-REPOFILE: open_three-tier-app.repo
+REPO_FILE: open_three-tier-app.repo
 
 # HAPROXY settings
 HAPROXY_PORT: 80
 
 # Tomcat settings
 TOMCAT_PORT: 8080
+TOMCAT_APP_HOME: /usr/share/tomcat/webapps
 
 # Gradle settings
 GRADLE_VERSION: 4.4
 GRADLE_HOME: /opt
-GRADLE_PORT: 8090
+
+# SpringBoot Settings
+SPRINGBOOT_PORT: 8090
 
 # Postgres settings
 DATABASE_NAME: postgres

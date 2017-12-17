@@ -1,0 +1,47 @@
+---
+
+- name: install jdk
+  yum:
+    name:  java-1.8.0-openjdk-devel
+    state: latest
+  tags:
+    - install_jdk
+
+- name: fetch gradle
+  get_url:
+    url: "https://services.gradle.org/distributions/gradle-{{ GRADLE_VERSION }}-all.zip"
+    dest: "/tmp/gradle-{{ GRADLE_VERSION }}-all.zip"
+  tags:
+    - fetch-gradle
+
+- name: unpack gradle to {{ GRADLE_HOME }}
+  unarchive:
+    src: /tmp/gradle-{{ GRADLE_VERSION }}-all.zip
+    dest: "{{ GRADLE_HOME }}"
+    remote_src: yes
+  tags:
+    - unpack-gradle
+
+- name: link installed gradle to {{ GRADLE_HOME}}/gradle
+  file:
+    src: "{{ GRADLE_HOME }}/gradle-{{ GRADLE_VERSION }}"
+    dest: "{{ GRADLE_HOME }}/gradle"
+    state: link
+  tags:
+    - link-gradle-directory
+
+# Borrowed from MagneDavidsone.gradle
+
+- name: configure gradle in system path
+  lineinfile:
+    dest: /etc/profile
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - regexp: "^GRADLE_HOME={{ GRADLE_HOME }}/gradle"
+      line: "GRADLE_HOME={{ GRADLE_HOME }}/gradle"
+    - regexp: "^PATH=.*GRADLE_HOME.*"
+      line: "PATH=$PATH:$GRADLE_HOME/bin"
+  tags:
+    - set-gradle-env

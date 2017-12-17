@@ -1,17 +1,15 @@
 ---
 - name: check load balancers and app servers for expected response
   uri:
-    url:  http://{{ item.server }}.{{ GUID }}.example.opentlc.com:{{ item.port }}
+    url:  http://{{ item.server }}.{{ DOMAIN_NAME }}:{{ item.port }}
     return_content: yes
   register: result
-  # until: '"Tomcat on" in result.content'
   until: '"{{ item.content }}" in result.content'
-#TODO: use a test string variable in previous line
   retries: 10
   delay: 1
   with_items:
     - { server: frontend1, port: "{{ HAPROXY_PORT }}", content: "Tomcat on app" }
     - { server: app1, port: "{{ TOMCAT_PORT }}", content: "Tomcat on app" }
     - { server: app2, port: "{{ TOMCAT_PORT }}", content: "Tomcat on app"}
-    - { server: app1, port: "{{ GRADLE_PORT }}", content: "Student" }
-    - { server: app2, port: "{{ GRADLE_PORT }}", content: "Student" }
+    - { server: app1, port: "{{ SPRINGBOOT_PORT }}", content: "Student" }
+    - { server: app2, port: "{{ SPRINGBOOT_PORT }}", content: "Student" }

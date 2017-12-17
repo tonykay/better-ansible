@@ -1,2 +1,7 @@
 ---
-# handlers file for app-build
+- name: restart student.service
+  service:
+    name: student.service
+    state: restarted
+  tags:
+    - restart_student_service
