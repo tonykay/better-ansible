@@ -41,10 +41,10 @@ class StudentController {
             student.setName(name);
             student.setDateOfBirth(df.parse(dateOfBirth));
             student = studentService.addStudent(student);
-            modelAndView.addObject("message", "Student added with name: " + student.getName());
+            modelAndView.addObject("message", "Lab status updated: " + student.getName());
         }
         catch (Exception ex){
-            modelAndView.addObject("message", "Failed to add student: " + ex.getMessage());
+            modelAndView.addObject("message", "Failed to update lab: " + ex.getMessage());
         }
         modelAndView.addObject("students", studentService.getStudents());
         return modelAndView;
