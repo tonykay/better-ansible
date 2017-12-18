@@ -10,6 +10,8 @@ global
 defaults
   log global
   mode  http
+  option httpchk GET /example/v1/items # With actuator it would be: /monitoring/health
+  http-check expect status 200         # http-check expect string UP
   option  httplog
   option  dontlognull
         timeout connect 5000
