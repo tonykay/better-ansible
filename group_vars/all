@@ -1,7 +1,7 @@
 ---
 # GUID MUST BE SET or passed in as an enviromental via -e GUID=wxyz
 
-GUID: 4e0d
+GUID: 2297
 
 DOMAIN_POSTFIX: example.opentlc.com
 DOMAIN_NAME: "{{ GUID }}.{{ DOMAIN_POSTFIX }}"

@@ -40,11 +40,6 @@
   tags:
     - build_student_app
 
-- debug:
-    var: result
-#        verbosity: 2
-
-
 - name: create systemd service wrapper for app
   template:
     src: student.service.j2
