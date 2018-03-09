@@ -1,0 +1,32 @@
+[all:vars]
+GUID=125a
+
+[example.opentlc.com:vars]
+
+###########################################################################
+### Ansible Vars
+###########################################################################
+timeout=60
+ansible_become=yes
+#ansible_ssh_user=ec2-user
+
+[example.opentlc.com:children]
+frontends
+apps
+appdbs
+
+## These are the frontends - haproxy
+[frontends]
+frontend1 ansible_host=frontend1."{{ GUID }}".example.opentlc.com
+
+## These are the apps - tomcat
+[apps]
+app1 ansible_host=app1."{{ GUID }}".example.opentlc.com
+app2 ansible_host=app2."{{ GUID }}".example.opentlc.com
+
+## These are the appdbi(s) - postgres
+[appdbs]
+appdb1 ansible_host=appdb1."{{ GUID }}".example.opentlc.com
+
+[external]
+#web ansible_host=frontend."{{ GUID }}".example.opentlc.com
