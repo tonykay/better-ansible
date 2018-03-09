@@ -1,0 +1,9 @@
+---
+- name: very simple playbook for Tower 101 demo
+  hosts: targets
+  gather_facts: false
+
+  tasks:
+    - name: simple ping
+      ping:
+
