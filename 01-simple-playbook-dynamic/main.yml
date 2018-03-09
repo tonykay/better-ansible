@@ -1,6 +1,6 @@
 ---
 - name: very simple playbook for Tower 101 demo
-  hosts: targets
+  hosts: all
   gather_facts: false
 
   tasks:
